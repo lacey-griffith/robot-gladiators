@@ -86,7 +86,6 @@ var startGame = function() {
     playerHealth = 100;
     playerAttack = 10;
     playerMoney = 10;
-console.log(playerHealth, playerAttack, playerMoney);
 
     for (var i = 0; i < enemyNames.length; i++) {
         //if player is still alive, keep fighting
