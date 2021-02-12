@@ -10,24 +10,39 @@
 //sconsole.log(playerInfo.name, playerInfo.attack, playerInfo.health);
 
 
+var fightOrSkip = function() {
+    var promptFight = 
+    window.prompt("Woukd you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.");
+    promptFight = promptFight.toLowerCase();
+
+    //recursive call
+    //if not given a valid value in promptFight then execute the following statements
+    if (!promptFight) {
+        window.alert("You need to choose a valid option. Please try again.");
+        return fightOrSkip();
+    }
+
+    //if player picks skip confirm, it stops the loop
+    if (promptFight === "skip") {
+        //confirm player wants to skip
+        var confirmSkip = window.confirm("Are you sure you'd like to quit?");
+    
+        //if yes (true) leave fight
+        if (confirmSkip) {
+            window.alert(playerInfo.name + " has decided to skip this fight.");
+            //subract money from player for skipping
+            playerInfo.money = Math.max(0,playerInfo.money - 10);
+            return true;
+        }
+    }
+    return false;
+}
+
 var fight = function(enemy) {
     while (enemy.health > 0 && playerInfo.health > 0) {
         //ask player to fight or skip
-        var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.");
-
-        //if player skips, confirm and stop loop
-        if (promptFight === "skip" || promptFight === "SKIP") {
-            //confirm player wants to quit
-            var confirmSkip = window.confirm("Are you sure you want to quit?");
-
-            // if yes (true) leave fight
-            if (confirmSkip) {
-                window.alert(playerInfo.name + " has decided to skip this fight. Goodbye!");
-                //subtract money from player for skipping fight
-                playerInfo.money = Math.max(0, playerInfo.money - 10);
-
-                break;
-            }
+        if(fightOrSkip()) {
+            break;
         }
 
         //remove enemy's health by subratcting the playerInfo.attack variable
