@@ -10,25 +10,48 @@
 //sconsole.log(playerInfo.name, playerInfo.attack, playerInfo.health);
 
 
-var fight = function(enemy) {
-    while (enemy.health > 0 && playerInfo.health > 0) {
-        //ask player to fight or skip
-        var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.");
+var fightOrSkip = function() {
+    var promptFight = 
+    window.prompt("Would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.");
+    promptFight = promptFight.toLowerCase();
 
-        //if player skips, confirm and stop loop
-        if (promptFight === "skip" || promptFight === "SKIP") {
-            //confirm player wants to quit
-            var confirmSkip = window.confirm("Are you sure you want to quit?");
+    //recursive call
+    //if not given a valid value in promptFight then execute the following statements
+    if (!promptFight) {
+        window.alert("You need to choose a valid option. Please try again.");
+        return fightOrSkip();
+    }
 
-            // if yes (true) leave fight
-            if (confirmSkip) {
-                window.alert(playerInfo.name + " has decided to skip this fight. Goodbye!");
-                //subtract money from player for skipping fight
-                playerInfo.money = Math.max(0, playerInfo.money - 10);
-
-                break;
-            }
+    //if player picks skip confirm, it stops the loop
+    if (promptFight === "skip") {
+        //confirm player wants to skip
+        var confirmSkip = window.confirm("Are you sure you'd like to quit?");
+    
+        //if yes (true) leave fight
+        if (confirmSkip) {
+            window.alert(playerInfo.name + " has decided to skip this fight.");
+            //subract money from player for skipping
+            playerInfo.money = Math.max(0,playerInfo.money - 10);
+            return true;
         }
+    }
+    return false;
+}
+
+var fight = function(enemy) {
+    var isPlayerTurn = true;
+
+        if (Math.random() > 0.5) {
+            isPlayerTurn = false;
+        }
+
+    while (enemy.health > 0 && playerInfo.health > 0) {
+        if (isPlayerTurn) {
+        //ask player to fight or skip
+        if(fightOrSkip()) {
+            break;
+        }
+    }
 
         //remove enemy's health by subratcting the playerInfo.attack variable
         var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
@@ -72,6 +95,7 @@ var fight = function(enemy) {
             window.alert(playerInfo.name + " still has " + playerInfo.health + " health left.");
 
         }
+        isPlayerTurn = !isPlayerTurn;
     }
 };
 //start a new game
@@ -128,10 +152,13 @@ var endGame = function() {
 };
 var shop = function() {
     var shopOptionPrompt = window.prompt(
-        "Would you like to REFILL your health, UPGRADE your attack or LEAVE the store? Please enter 'REFILL', 'UPGRADE', or 'LEAVE' to make a choice.");
+        "Would you like to REFILL your health, UPGRADE your attack or LEAVE the store? Please enter '1' for REFILL, '2' for UPGRADE, or '3' for LEAVE.");
+        //convert prompt string value into integer value for the switch cases
+        shopOptionPrompt = parseInt(shopOptionPrompt);
 
         //use switch to carry out action
         switch (shopOptionPrompt) {
+<<<<<<< HEAD
             case "REFILL": //new case
             case "refill":
                 playerInfo.refillHealth();
@@ -139,30 +166,40 @@ var shop = function() {
                 
             case "UPGRADE": //new case    
             case "upgrade":
+=======
+            case 1:
+                playerInfo.refillHealth();
+                break;
+            case 2:
+>>>>>>> develop
                 playerInfo.upgradeAttack();
                 break;
-            
-            case "LEAVE": //new case
-            case "leave":
+            case 3:
                 window.alert("Leaving the store.");
                 break;
-            
             default:
-                window.alert("You did not pick a valid option. Try Again.");
-                //call shop function again to force player to choose a valid option
+                window.alert("You did not pick a valid option. Try again.");
                 shop();
                 break;
         }
-
 };
 var randomNumber = function(min,max) {
     var value = Math.floor(Math.random() * (max-min + 1) + min);
     return value;
 };
 
+var getPlayerName = function() {
+    var name = "";
+    while (name === "" || name === null) {
+        name = prompt("What is your robot's name?");
+    }
+    console.log("Your robot's name is " + name);
+    return name;
+};
+
 //Player stats
 var playerInfo = {
-    name: window.prompt("What is your robot's name?"),
+    name: getPlayerName(),
     health: 100,
     attack: 10,
     money: 10,
