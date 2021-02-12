@@ -39,11 +39,19 @@ var fightOrSkip = function() {
 }
 
 var fight = function(enemy) {
+    var isPlayerTurn = true;
+
+        if (Math.random() > 0.5) {
+            isPlayerTurn = false;
+        }
+
     while (enemy.health > 0 && playerInfo.health > 0) {
+        if (isPlayerTurn) {
         //ask player to fight or skip
         if(fightOrSkip()) {
             break;
         }
+    }
 
         //remove enemy's health by subratcting the playerInfo.attack variable
         var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
@@ -87,6 +95,7 @@ var fight = function(enemy) {
             window.alert(playerInfo.name + " still has " + playerInfo.health + " health left.");
 
         }
+        isPlayerTurn = !isPlayerTurn;
     }
 };
 
