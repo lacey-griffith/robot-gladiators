@@ -158,20 +158,10 @@ var shop = function() {
 
         //use switch to carry out action
         switch (shopOptionPrompt) {
-<<<<<<< HEAD
-            case "REFILL": //new case
-            case "refill":
-                playerInfo.refillHealth();
-                break;
-                
-            case "UPGRADE": //new case    
-            case "upgrade":
-=======
             case 1:
                 playerInfo.refillHealth();
                 break;
             case 2:
->>>>>>> develop
                 playerInfo.upgradeAttack();
                 break;
             case 3:
